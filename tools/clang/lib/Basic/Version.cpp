@@ -122,17 +122,17 @@ std::string getClangFullVersion() {
 std::string getClangToolFullVersion(StringRef ToolName) {
   std::string buf;
   llvm::raw_string_ostream OS(buf);
-#ifdef CLANG_VENDOR
-  OS << CLANG_VENDOR;
-#endif
-  OS << ToolName << " version " CLANG_VERSION_STRING " "
-     << getClangFullRepositoryVersion();
+//#ifdef CLANG_VENDOR
+//  OS << CLANG_VENDOR;
+//#endif
+//  OS << ToolName << " version " CLANG_VERSION_STRING " "
+//     << getClangFullRepositoryVersion();
 
   // If vendor supplied, include the base LLVM version as well.
-#ifdef CLANG_VENDOR
-  OS << " (based on " << BACKEND_PACKAGE_STRING << ")";
-#endif
-
+//#ifdef CLANG_VENDOR
+//  OS << " (based on " << BACKEND_PACKAGE_STRING << ")";
+//#endif
+	OS << "Copyright (C) 2006 The Android Open Source Project";
   return OS.str();
 }
 
