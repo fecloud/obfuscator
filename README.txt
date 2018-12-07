@@ -15,3 +15,50 @@ documentation setup.
 
 If you are writing a package for LLVM, see docs/Packaging.rst for our
 suggestions.
+
+
+win7 mingw complie modify
+
+CryptoUtils.cpp
+
+#include <time.h>
+void tritium_init_rand_key(char * buf,unsigned int buflen) {
+    unsigned int i;
+    srand(time(NULL));
+    for (i = 0; i < buflen; i++) {
+        buf[i] = char(rand() & 0xFF);
+    }
+}
+ 
+#define __tritium__
+
+bool CryptoUtils::prng_seed() {
+#ifdef __tritium__
+    //LLVMContext &ctx = llvm::getGlobalContext();
+    tritium_init_rand_key(key, 16);
+    DEBUG_WITH_TYPE("cryptoutils", dbgs() << "cryptoutils seeded with time srand and rand\n");
+    memset(ctr, 0, 16);
+    // Once the seed is there, we compute the
+    // AES128 key-schedule
+    aes_compute_ks(ks, key);
+    seeded = true;
+#else
+
+
+
+std::string getClangToolFullVersion(StringRef ToolName) {
+  std::string buf;
+  llvm::raw_string_ostream OS(buf);
+//#ifdef CLANG_VENDOR
+//  OS << CLANG_VENDOR;
+//#endif
+//  OS << ToolName << " version " CLANG_VERSION_STRING " "
+//     << getClangFullRepositoryVersion();
+
+  // If vendor supplied, include the base LLVM version as well.
+//#ifdef CLANG_VENDOR
+//  OS << " (based on " << BACKEND_PACKAGE_STRING << ")";
+//#endif
+	OS << "Copyright (C) 2006 The Android Open Source Project";
+  return OS.str();
+}
